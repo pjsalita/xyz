@@ -15,10 +15,10 @@ mix.js('resources/js/app.js', 'public/js')
   .sass('resources/sass/app.scss', 'public/css')
   .disableNotifications()
   .webpackConfig({
-    resolve:{
-        extensions:['.js','.vue'],
-            alias:{
-            '@':__dirname + '/resources/js'
-        }
+    resolve: {
+      extensions:['.js','.vue'],
+        alias:{
+        '@':__dirname + '/resources/js'
+      }
     }
   })
