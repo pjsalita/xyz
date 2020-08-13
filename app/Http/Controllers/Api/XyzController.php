@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class XyzController extends Controller
 {
-    private $input;
+    private $input, $output;
     private $size = 3;
     private $direction = 'horizontal';
 
@@ -19,122 +19,75 @@ class XyzController extends Controller
         $this->size = $request->size ?? $this->size;
         $this->direction = $request->direction ?? $this->direction;
 
-        $output = $this->createFiglet();
+        $this->createFiglet();
 
-        Log::channel('xyz')->info(PHP_EOL . $output);
+        Log::channel('xyz')->info(PHP_EOL . $this->output);
 
         $response = [
-            'output' => $output,
+            'output' => $this->output,
             'message' => 'Log file created'
         ];
 
         return response($response, 200);
     }
 
-    protected function createFiglet()
+    private function createFiglet()
     {
-        $figlet = '';
-
-        if($this->direction == 'horizontal') {
-            $figlet = $this->figletHorizontal();
-        }else {
-            $split_input = str_split($this->input);
-
-            foreach($split_input as $letter) {
-                $figlet .= $this->figletVertical($letter);
-            }
-        }
-
-        return $figlet;
-    }
-
-    protected function figletHorizontal()
-    {
-        $figlet = '';
         $split_input = str_split($this->input);
 
-        for($row = 0; $row < $this->size; $row++) {
-            foreach ($split_input as $letter) {
-                switch ($letter) {
-                    case 'X':
-                        for($column = 0; $column <= $this->size; $column++) {
-                            if ($column == $row || ($column == $this->size-1 - $row))
-                                $figlet .= "o";
-                            else
-                                $figlet .= " ";
-                        }
-                        break;
-
-                    case 'Y':
-                        for($column = 0; $column <= $this->size; $column++) {
-                            if ($row <= $this->size/2 && ($row == $column || $row + $column == $this->size-1) || ($row > $this->size/2 && $column == $this->size/2) || (($column == floor($this->size/2)) and $row > floor($this->size/2)))
-                                $figlet .= "o";
-                            else
-                                $figlet .= " ";
-                        }
-                        break;
-
-                    case 'Z':
-                        for($column = 0; $column <= $this->size; $column++) {
-                            if ( ( ($row == 0 or $row == $this->size-1) and $column >= 0 and $column <= $this->size-1) or $row + $column == $this->size-1)
-                                $figlet .= "o";
-                            else
-                            $figlet .= " ";
-                        }
-                        break;
-
-                    default:
-                        # code...
-                        break;
+        if($this->direction == 'horizontal') {
+            for($row = 0; $row < $this->size; $row++) {
+                foreach ($split_input as $letter) {
+                    for($column = 0; $column <= $this->size; $column++) {
+                        $this->createLetter($row, $column, $letter);
+                    }
                 }
+
+                $this->output .= "\n";
             }
 
-            $figlet .= "\n";
+            $this->output .= "\n";
+        }else {
+            foreach($split_input as $letter) {
+                for($row = 0; $row < $this->size; $row++) {
+                    for($column = 0; $column <= $this->size; $column++) {
+                        $this->createLetter($row, $column, $letter);
+                    }
+
+                    $this->output .= "\n";
+                }
+
+                $this->output .= "\n";
+            }
         }
-
-        $figlet .= "\n";
-
-        return $figlet;
     }
 
-    protected function figletVertical($letter)
+    private function createLetter($row, $column, $letter)
     {
-        $figlet = '';
+        switch ($letter) {
+            case 'X':
+                if ($column == $row || ($column == $this->size-1 - $row))
+                    $this->output .= "o";
+                else
+                    $this->output .= " ";
+                break;
 
-        for($row = 0; $row < $this->size; $row++) {
-            for($column = 0; $column <= $this->size; $column++) {
-                switch ($letter) {
-                    case 'X':
-                        if ($column == $row || ($column == $this->size-1 - $row))
-                            $figlet .= "o";
-                        else
-                            $figlet .= " ";
-                        break;
+            case 'Y':
+                if ($row <= $this->size/2 && ($row == $column || $row + $column == $this->size-1) || ($row > $this->size/2 && $column == $this->size/2) || (($column == floor($this->size/2)) and $row > floor($this->size/2)))
+                    $this->output .= "o";
+                else
+                    $this->output .= " ";
+                break;
 
-                    case 'Y':
-                        if ($row <= $this->size/2 && ($row == $column || $row + $column == $this->size-1) || ($row > $this->size/2 && $column == $this->size/2) || (($column == floor($this->size/2)) and $row > floor($this->size/2)))
-                            $figlet .= "o";
-                        else
-                            $figlet .= " ";
-                        break;
+            case 'Z':
+                if ( ( ($row == 0 or $row == $this->size-1) and $column >= 0 and $column <= $this->size-1) or $row + $column == $this->size-1)
+                    $this->output .= "o";
+                else
+                    $this->output .= " ";
+                break;
 
-                    case 'Z':
-                        if ( ( ($row == 0 or $row == $this->size-1) and $column >= 0 and $column <= $this->size-1) or $row + $column == $this->size-1)
-                            $figlet .= "o";
-                        else
-                        $figlet .= " ";
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-
-            $figlet .= "\n";
+            default:
+                break;
         }
-
-        $figlet .= "\n";
-
-        return $figlet;
     }
 }
