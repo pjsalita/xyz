@@ -40,9 +40,7 @@
     ```
     $ php artisan serve
     ```
-7. Visit the served app to check the front-end.
+7. Visit the served port to check the front-end.
 
 Sample endpoint:
-- http://xyz.test/api/xyz?direction=horizontal&size=5
-
-Need authentication!!!
+- http://xyzfiglet.cf/api/xyz?direction=horizontal&size=5

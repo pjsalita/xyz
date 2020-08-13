@@ -27,9 +27,9 @@ class AuthController extends Controller
         $token = $user->createToken('api-token')->plainTextToken;
 
         $response = [
+            'message' => "Welcome {$user->name}!",
             'token' => $token,
-            'user' => $user,
-            'message' => "Welcome {$user->name}!"
+            'user' => $user
         ];
 
         return response($response, 200);
@@ -73,9 +73,9 @@ class AuthController extends Controller
         $token = $user->createToken('api-token')->plainTextToken;
 
         $response = [
+            'message' => 'User successfully registered.',
             'token' => $token,
-            'user' => $user,
-            'message' => 'User successfully registered.'
+            'user' => $user
         ];
 
         return response($response, 201);

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\XyzRequest;
-use Laminas\Text\Figlet\Figlet;
 use Illuminate\Support\Facades\Log;
 
 class XyzController extends Controller
@@ -24,8 +23,8 @@ class XyzController extends Controller
         Log::channel('xyz')->info(PHP_EOL . $this->output);
 
         $response = [
-            'output' => $this->output,
-            'message' => 'Log file created'
+            'message' => 'Log file created',
+            'output' => $this->output
         ];
 
         return response($response, 200);
@@ -64,24 +63,26 @@ class XyzController extends Controller
 
     private function createLetter($row, $column, $letter)
     {
+        $character = 'O';
+
         switch ($letter) {
             case 'X':
                 if ($column == $row || ($column == $this->size-1 - $row))
-                    $this->output .= "o";
+                    $this->output .= $character;
                 else
                     $this->output .= " ";
                 break;
 
             case 'Y':
                 if ($row <= $this->size/2 && ($row == $column || $row + $column == $this->size-1) || ($row > $this->size/2 && $column == $this->size/2) || (($column == floor($this->size/2)) and $row > floor($this->size/2)))
-                    $this->output .= "o";
+                    $this->output .= $character;
                 else
                     $this->output .= " ";
                 break;
 
             case 'Z':
-                if ( ( ($row == 0 or $row == $this->size-1) and $column >= 0 and $column <= $this->size-1) or $row + $column == $this->size-1)
-                    $this->output .= "o";
+                if ((($row == 0 or $row == $this->size-1) and $column >= 0 and $column <= $this->size-1) or $row + $column == $this->size-1)
+                    $this->output .= $character;
                 else
                     $this->output .= " ";
                 break;
