@@ -43,4 +43,4 @@
 7. Visit the served port to check the front-end.
 
 Sample endpoint:
-- http://xyzfiglet.cf/api/xyz?direction=horizontal&size=5
+- http://localhost:8000/api/xyz?direction=horizontal&size=5
