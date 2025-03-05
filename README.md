@@ -23,21 +23,16 @@
     $ cp .env.example .env
     $ php artisan key:generate
     ```
-4. Update database credentials in .env file
-    ```
-    DB_CONNECTION=mysql
-    DB_HOST=127.0.0.1
-    DB_PORT=3306
-    DB_DATABASE=
-    DB_USERNAME=
-    DB_PASSWORD=
+4. Create **database.sqlite** file under database folder
+    ```sh
+    $ touch database/database.sqlite
     ```
 5. Run migrations
-    ```
+    ```sh
     $ php artisan migrate
     ```
 6. Serve
-    ```
+    ```sh
     $ php artisan serve
     ```
 7. Visit the served port to check the front-end.
