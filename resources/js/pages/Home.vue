@@ -35,7 +35,7 @@
                   </div>
                 </ValidationProvider>
 
-                <ValidationProvider tag="div" class="form-group row" rules="required|min_value:3|odd" v-slot="{ errors, valid }">
+                <ValidationProvider tag="div" class="form-group row" rules="required|min_value:3|max_value:99|odd" v-slot="{ errors, valid }">
                   <label for="size" class="col-md-4 col-form-label text-md-right">Size</label>
 
                   <div class="col-md-6">

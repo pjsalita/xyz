@@ -27,7 +27,7 @@ class XyzRequest extends FormRequest
         return [
             'input' => 'regex:/^[XYZ]*$/',
             'direction' => 'string|in:horizontal,vertical',
-            'size' => ['numeric', 'min:3', new Odd]
+            'size' => ['numeric', 'min:3', 'max:99', new Odd]
         ];
     }
 
